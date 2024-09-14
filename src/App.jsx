@@ -29,10 +29,13 @@ const App = () => {
     }
   };
 
-  // Delete a todo
+  // Delete a todo with confirmation
   const handleDeleteTodo = (index) => {
-    const updatedTodos = todos.filter((_, i) => i !== index); // Remove todo by index
-    setTodos(updatedTodos); // Update state with new todo list
+    const confirmDelete = window.confirm('Are you sure you want to delete this todo?'); // Show confirmation dialog
+    if (confirmDelete) {
+      const updatedTodos = todos.filter((_, i) => i !== index); // Remove todo by index
+      setTodos(updatedTodos); // Update state with new todo list
+    }
   };
 
   // Open the edit modal
@@ -133,40 +136,36 @@ const App = () => {
               >
                 Add Todo
               </button>
-         
             </div>
             {/* Display Todos */}
-     {todos.length > 0 && (
-          <div className="flex flex-col space-y-4 mt-6 w-full justify-center items-center">
-            {todos.map((todo, index) => (
-              <div key={index} className="bg-gray-500 p-4 rounded-lg w-[350px]">
-                <h2 className="text-white text-lg font-semibold">{todo.task}</h2>
-                {todo.descriptions.map((desc, i) => (
-                  <p key={i} className="text-white">{desc}</p>
+            {todos.length > 0 && (
+              <div className="flex flex-col space-y-4 mt-6 w-full justify-center items-center">
+                {todos.map((todo, index) => (
+                  <div key={index} className="bg-gray-500 p-4 rounded-lg w-[350px]">
+                    <h2 className="text-white text-lg font-semibold">{todo.task}</h2>
+                    {todo.descriptions.map((desc, i) => (
+                      <p key={i} className="text-white">{desc}</p>
+                    ))}
+                    <div className="mt-2 flex space-x-2 w-full">
+                      <button
+                        onClick={() => openEditModal(index)}
+                        className="bg-blue-500 text-white rounded-lg py-1 px-3"
+                      >
+                        Edit Todo
+                      </button>
+                      <button
+                        onClick={() => handleDeleteTodo(index)}
+                        className="bg-red-500 text-white rounded-lg py-1 px-3"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
                 ))}
-                <div className="mt-2 flex space-x-2 w-full">
-                  <button
-                    onClick={() => openEditModal(index)}
-                    className="bg-blue-500 text-white rounded-lg py-1 px-3"
-                  >
-                    Edit Todo
-                  </button>
-                  <button
-                    onClick={() => handleDeleteTodo(index)}
-                    className="bg-red-500 text-white rounded-lg py-1 px-3"
-                  >
-                    Delete
-                  </button>
-                </div>
               </div>
-            ))}
+            )}
           </div>
-        )}
-          </div>
-          
         </div>
-     
-        
       </div>
 
       {/* Footer */}
@@ -222,7 +221,7 @@ const App = () => {
                   className="bg-green-500 text-white rounded-lg py-1 px-4"
                   onClick={() => setEditDescriptions([...editDescriptions, ''])}
                 >
-                  + Add 
+                  + Add
                 </button>
               </div>
             </div>
